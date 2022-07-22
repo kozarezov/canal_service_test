@@ -13,6 +13,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
+        ordering = ['order_id']
 
     def __str__(self):
         return str(self.number)
