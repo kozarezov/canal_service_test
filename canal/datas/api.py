@@ -75,27 +75,28 @@ class ParseData():
         self.values = api.get_values()
 
     def save(self, order: list) -> None:
-        obj, created = Order.objects.get_or_create(order_id=order[0])
+        try:
+            obj, created = Order.objects.get_or_create(excel_id=order[0])
 
-        obj.number = order[1]
-        obj.cost_dollar = order[2]
-        obj.cost_ruble = round(order[2] * self.course, 2)
-        obj.date = datetime.date(order[3])
+            obj.number = order[1]
+            obj.cost_dollar = order[2]
+            obj.cost_ruble = round(order[2] * self.course, 2)
+            obj.date = datetime.date(order[3])
+            obj.save()
+        except Exception:
+            raise Exception('Данные не соответсвуют задокументированному формату')
 
     def parsing(self) -> None:
         """Обработка полученных данных."""
-        exclude_list = Order.objects.values_list('order_id')
-        print(exclude_list)
+        exclude_list = []
 
         for order in self.values:
             self.save(order)
-        
+            exclude_list.append(order[0])
+
+        Order.objects.exclude(excel_id__in=exclude_list).delete()
 
 
 def script() -> None:
     """Основной скрипт программы."""
     ParseData().parsing()
-
-
-if __name__ == '__main__':
-    script()

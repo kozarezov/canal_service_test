@@ -7,7 +7,7 @@ from .models import Order
 class OrderAdmin(admin.ModelAdmin):
     """Настройки админки для модели Order."""
 
-    list_display = ('order_id', 'number', 'cost_dollar', "cost_ruble", "date")
-    search_fields = ('order_id', 'number')
-    list_filter = ('order_id', 'date',)
+    list_display = ('excel_id', 'number', 'cost_dollar', "cost_ruble", "date")
+    search_fields = ('excel_id', 'number')
+    list_filter = ('excel_id', 'date',)
     empty_value_display = "-пусто-"
